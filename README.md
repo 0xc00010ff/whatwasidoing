@@ -19,7 +19,7 @@ command-line $ doing refactoring the spacetime combobulator
 > refactoring the spacetime combobulator
 
 command-line $ wwid
-> refactoring the spacetime combobulator
+> 🔹 refactoring the spacetime combobulator
 
 command-line $ doing done
 > ✅ refactoring the spacetime combobulator
