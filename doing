@@ -1,0 +1,72 @@
+#! /usr/bin/ruby
+# ____        _
+# |  _ \  ___ (_)_ __   __ _
+# | | | |/ _ \| | '_ \ / _` |
+# | |_| | (_) | | | | | (_| |
+# |____/ \___/|_|_| |_|\__, |
+#                      |___/
+#
+# Keeps track of the one thing you should be focusing on.
+# A managment tool for spread-thinners. Really a one line todo list for idiots.
+# Usage:
+# cmd: "doing something or another"
+# > something or another
+# cmd: "wwid"
+# > something or another
+
+FILE_NAME_TODO = "/var/tmp/.doing-#{File.basename(Dir.getwd)}"
+
+def help
+  puts <<-HEREDOC
+doing: a todo list for scatterbrains.
+
+Its a todo list with one item. Set the todo with the `doing` command
+and read it with the `wwid` (WhatWasIDoing) command
+
+Setting the todo: `doing [whatever you\'re doing]`
+Checking the todo: `wwid`
+Completing the todo: `doing done` or `doing clear`
+
+  HEREDOC
+end
+
+def removeFile
+  if File.exist? FILE_NAME_TODO
+    File.delete FILE_NAME_TODO
+  end
+  exit
+end
+
+todo = ARGV.join(' ').strip()
+
+# catch empty and show help
+if todo.nil? or todo.empty?
+  help
+  exit
+end
+
+# catch done marker
+if todo == 'done'
+  # put a checkmark next to the todo
+  if File.exist? FILE_NAME_TODO
+    File.open(FILE_NAME_TODO, 'r') do |file|
+      file.each_line do
+        |line| puts "✅  #{line}"
+      end
+    end
+  end
+
+  removeFile
+  exit
+end
+
+
+# catch clear marker
+if todo == 'clear'
+  puts 'Incinerating the todo..'
+  removeFile
+  exit
+end
+
+puts todo
+File.open(FILE_NAME_TODO, 'w') { |file| file.write(todo) }
