@@ -27,15 +27,15 @@ Looks like you weren't doing anything.
 Set your todo with `doing [whatever you're doing]`
 
   HEREDOC
-  exit
 end
 
 if not File.exist? FILE_NAME_TODO
   help
+  exit
 end
 
 File.open(FILE_NAME_TODO, 'r') do |file|
   file.each_line do
-    |line| puts line
+    |line| puts "\n🔹  #{line}\n\n"
   end
 end
