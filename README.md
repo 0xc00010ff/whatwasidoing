@@ -4,7 +4,7 @@ A todo list for errant multitaskers or single-celled organisms.
 Keeps track of the **one thing** you should be focusing on.
 Really a one line todo list for idiots like the author.
 
-If you're like me, you'll often open an old project to find a half-completed disaster that started as a great idea but ended in a reluctant 5am ill-finish-this-first-thing-never. If only you could remember- what the *fuck* was I doing?
+If you're like me you'll start working on an important task and before you know it, you've got 18 quantum astrophysics Wikipedia tabs open and you've decided to rebuild your app to be a faster than light teleportation service. "What the _fuck_ was I doing," you ask. Lo, and behold. Now you'll remember. And maybe, just maybe- you'll stay on track. 
 
 ### Installation:
 ```
@@ -24,3 +24,5 @@ command-line $ wwid
 command-line $ doing done
 > ✅ refactoring the spacetime combobulator
 ```
+
+* The todos are namespaced by directory, so your todo in ~/project1 is unaffected by that in ~/project2
