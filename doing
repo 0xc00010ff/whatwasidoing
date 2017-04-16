@@ -68,5 +68,7 @@ if todo == 'clear'
   exit
 end
 
-puts todo
+# the output after setting the todo
+puts "\n🔸  #{todo}\n\n"
+
 File.open(FILE_NAME_TODO, 'w') { |file| file.write(todo) }
