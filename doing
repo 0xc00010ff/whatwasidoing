@@ -18,29 +18,56 @@ FILE_NAME_TODO = "/var/tmp/.doing-#{File.basename(Dir.getwd)}"
 
 def help
   puts <<-HEREDOC
-doing: a todo list for scatterbrains.
+doing: a todo list for single minded organisms.
 
-Its a todo list with one item. Set the todo with the `doing` command
-and read it with the `wwid` (WhatWasIDoing) command
+Its a todo list with one item.
 
 Setting the todo: `doing [whatever you\'re doing]`
-Checking the todo: `wwid`
+Checking the todo: `doing`
 Completing the todo: `doing done` or `doing clear`
+Help: `doing --help`
 
   HEREDOC
 end
 
+def todoExists
+  exists = File.exist? FILE_NAME_TODO
+  exists
+end
+
+def writeTodo(todo)
+  File.open(FILE_NAME_TODO, 'w') { |file| file.write(todo) }
+end
+
+def readTodo
+  File.open(FILE_NAME_TODO, 'r') do |file|
+    file.each_line do
+      |line| puts "\n🔹  #{line}\n\n"
+    end
+  end
+end
+
 def removeFile
-  if File.exist? FILE_NAME_TODO
+  if todoExists
     File.delete FILE_NAME_TODO
   end
   exit
 end
 
+# # Main # #
+
 todo = ARGV.join(' ').strip()
 
-# catch empty and show help
-if todo.nil? or todo.empty?
+# show help when no todo is set
+if !todoExists and (todo.nil? or todo.empty?)
+  help
+  exit
+end
+
+# catch help option
+HELP_OPTIONS = ['help', '--help', '-h']
+
+if HELP_OPTIONS.any? { |option| option == todo }
   help
   exit
 end
@@ -68,7 +95,19 @@ if todo == 'clear'
   exit
 end
 
-# the output after setting the todo
-puts "\n🔸  #{todo}\n\n"
 
-File.open(FILE_NAME_TODO, 'w') { |file| file.write(todo) }
+# # normal operations. file the todo or read it back
+
+# if there is a todo
+if not todo.nil? and not todo.empty?
+  # write the todo
+  writeTodo todo
+  # confirm the todo
+  puts "\n🔸  #{todo}\n\n"
+else # we just want the current todo
+  # read the todo
+  readTodo
+end
+
+
+exit
