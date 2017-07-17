@@ -16,11 +16,14 @@
 
 FILE_NAME_TODO = "/var/tmp/.doing-#{File.basename(Dir.getwd)}"
 
+_currentTodo = ""
+
+
 def help
   puts <<-HEREDOC
-doing: a todo list for single minded organisms.
+doing: a singular todo list for multitaskers.
 
-Its a todo list with one item.
+Its a todo list for the current directory with one todo.
 
 Setting the todo: `doing [whatever you\'re doing]`
 Checking the todo: `doing`
@@ -41,8 +44,8 @@ end
 
 def readTodo
   File.open(FILE_NAME_TODO, 'r') do |file|
-    file.each_line do
-      |line| puts "\n🔹  #{line}\n\n"
+    file.each_line do |line|
+      puts "\n🔹  #{line}\n\n"
     end
   end
 end
@@ -56,6 +59,16 @@ end
 
 # # Main # #
 
+# grab the current todo in case we need it
+if todoExists
+  File.open(FILE_NAME_TODO, 'r') do |file|
+    file.each_line do |line|
+      _currentTodo += line
+    end
+  end
+end
+
+# grab any arguments / new todos from the command line
 todo = ARGV.join(' ').strip()
 
 # show help when no todo is set
@@ -75,7 +88,7 @@ end
 # catch done marker
 if todo == 'done'
   # put a checkmark next to the todo
-  if File.exist? FILE_NAME_TODO
+  if todoExists
     File.open(FILE_NAME_TODO, 'r') do |file|
       file.each_line do
         |line| puts "✅  #{line}"
@@ -89,10 +102,20 @@ end
 
 
 # catch clear marker
-if todo == 'clear'
-  puts 'Incinerating the todo..'
+if todo == 'clear' or todo == 'cancel'
+  puts 'Incinerating the todo.. 🔥'
   removeFile
   exit
+end
+
+# catch commit marker
+if todo == 'commit' || todo == '-c'
+  puts 'Commiting...'
+  commit = "git commit -e -m \"#{_currentTodo}\""
+  puts commit
+  exec( commit )
+  puts 'Done! Committed! ✨✅✨'
+  removeFile
 end
 
 
