@@ -110,10 +110,10 @@ end
 
 # catch commit marker
 if todo == 'commit' || todo == '-c'
-  puts 'Commiting...'
-  commit = "git commit -e -m \"#{_currentTodo}\""
+  puts '⏳ Committing...'
+  commit = "git commit -m \"#{_currentTodo}\""
   puts commit
-  exec( commit )
+  `#{commit}`
   puts 'Done! Committed! ✨✅✨'
   removeFile
 end
